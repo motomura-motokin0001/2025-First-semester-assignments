@@ -15,12 +15,13 @@ public class SceneEffect : MonoBehaviour
     {
         var sequence = DOTween.Sequence();
         sequence.Append(EffectImage.DOFade(1f,0.5f));
-        sequence.Append(load.DOFade(0.8f,0.8f).SetLoops(-1,LoopType.Yoyo));
+        sequence.Append(load.DOFillAmount(1f, SceneLoadManager.Waiting)).OnComplete(() =>
+        {
+            sequence.Append(EffectImage.DOFade(0f,0.3f));
+            sequence.Join(load.DOFade(0f,0.3f).OnComplete(destroy));
+        });
 
-        sequence.AppendInterval(1.3f);
 
-        sequence.Append(EffectImage.DOFade(0f,0.3f));
-        sequence.Join(load.DOFade(0f,0.3f).OnComplete(destroy));
     }
 
 
